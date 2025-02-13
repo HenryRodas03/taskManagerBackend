@@ -16,6 +16,5 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(UserSeeder::class);
         Task::factory()->count(10)->create();
-        TaskHistory::factory()->count(20)->create();
     }
 }

@@ -28,4 +28,14 @@ class TaskController extends Controller
             return ['status' => false, 'message' => "error", $e->getMessage()];
         }
     }
+
+    public function deleteTask(ValidationTask $request)
+    {
+        try {
+            $response = Task::deleteTask($request);
+            return ['status' => true, 'message' => 'success', 'data' => $response];
+        } catch (\Exception $e) {
+            return ['status' => false, 'message' => "error", $e->getMessage()];
+        }
+    }
 }

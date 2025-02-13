@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
@@ -21,6 +22,7 @@ class Task extends Model
         'name',
         'description',
         'status',
+        'date',
     ];
 
     public static function getTasks($request)
@@ -37,26 +39,56 @@ class Task extends Model
             });
         });
 
-        if ($request->status) {
+
+        if ($request->status != null) {
             $search->where('status', $request->status)->get();
         }
 
-        if ($request->date) {
+        if ($request->date != null) {
             $search->where('date', $request->date)->get();
         }
 
-        return $search->paginate(10);
+        if ($request->finishDate != null) {
+            $search->whereIn('tasks.id', function ($query) use ($request) {
+                $query->select('task_id')
+                    ->from('task_history')
+                    ->where('tasks.status', 2)
+                    ->whereDate('changed_at', $request->finishDate);
+            })->get();
+        }
+
+        return $search->orderBy('created_at', 'desc')->paginate(10);
     }
 
     public static function saveOrUpdateTask($request)
     {
         $data = $request->only(['name', 'description', 'status', 'date']);
 
-        Task::updateOrInsert(
+
+        $task = Task::updateOrCreate(
             ['id' => $request->id ?? null],
             $data
         );
 
-        return ['succes'];
+        $lastHistory = TaskHistory::where('task_id', $task->id)
+            ->orderBy('changed_at', 'desc')
+            ->first();
+
+        $previousStatus = $lastHistory ? $lastHistory->new_status : 0;
+
+        TaskHistory::create([
+            'task_id' => $task->id,
+            'previous_status' => $previousStatus,
+            'new_status' => $task->status,
+            'changed_at' => Carbon::now()->toDateString(),
+        ]);
+
+        return ['success'];
+    }
+
+    public static function deleteTask($request)
+    {
+        $user = task::find($request->taskId);
+        return $user->delete();
     }
 }

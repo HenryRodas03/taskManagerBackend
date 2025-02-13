@@ -30,6 +30,24 @@ class ValidationTask extends FormRequest
             ];
         }
 
+        if ($this->routeIs('saveOrUpdateTask')) {
+            return [
+                'user_id' => 'required',
+                'id' => 'required',
+                'name' => 'required',
+                'description' => 'required',
+                'status' => 'required',
+                'date' => 'required',
+            ];
+        }
+
+        if ($this->routeIs('deleteTask')) {
+            return [
+                'user_id' => 'required',
+                'taskId' => 'required',
+            ];
+        }
+
         return [];
     }
 }
