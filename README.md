@@ -1,5 +1,14 @@
 <h1 style="color: #007acc;"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="100" alt="Laravel Logo"> TaskManager Laravel</h1>
-Este proyecto fue creado con la version 11.42.0 de <a href="https://laravel.com" target="_blank">Laravel Framework</a>.
+Este proyecto es una API diseñada para la aplicación web <a href="https://github.com/HenryRodas03/taskManager" target="_blank">TaskManager</a>. Fue creada con la versión 11.42.0 de <a href="https://laravel.com" target="_blank">Laravel Framework</a> para la gestión eficiente de tareas.
+
+## ⚙️ Requisitos previos
+
+| Librería | Version | 
+| ---------- | ----- |
+| PHP | >=v8.2 |
+| Composer | v2.6.5 |
+| Node.Js | >=v18 |
+| NPM | v10.9.2|
 
 ## 🚀 Instalación y ejecución
 
@@ -29,7 +38,4 @@ php artisan serve
 
 | Librería | Version | 
 | ---------- | ----- |
-| PHP | >=v8.2 |
-| Node | >=v18 |
-| Composer | v2.6.5 |
 | Sanctum | v4.0.8 |
