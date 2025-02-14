@@ -9,6 +9,9 @@ Route::post('login', [AuthController::class, 'login']);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
 
+    //Auth
+    Route::post('logOut', [AuthController::class, 'logOut']);
+
     //TaskController
     Route::get('listAllTasks', [TaskController::class, 'getTasks']);
 
