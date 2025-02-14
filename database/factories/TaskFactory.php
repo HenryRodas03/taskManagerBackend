@@ -18,7 +18,7 @@ class TaskFactory extends Factory
         return [
             'name' => $this->faker->sentence(3),
             'description' => $this->faker->paragraph(),
-            'status' => $this->faker->numberBetween(0, 3),
+            'status' => $this->faker->randomElement([0, 1, 3]),
             'date' => Carbon::now()->addDays($this->faker->numberBetween(5, 21))->toDateString(),
             'created_at' => now(),
             'updated_at' => now(),
