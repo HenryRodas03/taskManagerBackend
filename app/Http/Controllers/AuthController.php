@@ -18,7 +18,7 @@ class AuthController extends Controller
             $user = User::where('email', $credentials['email'])->first();
 
             if (!$user || !Hash::check($credentials['password'], $user->password)) {
-                return response()->json(['message' => 'Unauthorized'], 401);
+                return ['status' => false, 'message' => 'Unauthorized'];
             }
 
             $user = User::getUserByEmail($request['email']);
@@ -45,7 +45,9 @@ class AuthController extends Controller
     public function logout(ValidationLogin $request)
     {
         try {
-            $user = User::getUserByEmail($request['email']);
+            $user = User::where('id', $request['id'])
+                ->select('id', 'user_name', 'email', 'password')
+                ->first();;
 
             $token = $user->tokens()->first();
 
@@ -53,7 +55,7 @@ class AuthController extends Controller
 
                 $token->delete();
 
-                return [true, 'success', []];
+                return ['status' => true, 'message' => 'success', 'data' => []];
             }
         } catch (\Exception $e) {
             return [false, "error", $e->getMessage()];
